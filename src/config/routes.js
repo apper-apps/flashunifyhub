@@ -1,8 +1,10 @@
-import Inbox from '@/components/pages/Inbox';
-import Projects from '@/components/pages/Projects';
-import Calendar from '@/components/pages/Calendar';
-import Rules from '@/components/pages/Rules';
-import Settings from '@/components/pages/Settings';
+import React from "react";
+import Projects from "@/components/pages/Projects";
+import ProjectTimeline from "@/components/pages/ProjectTimeline";
+import Settings from "@/components/pages/Settings";
+import Calendar from "@/components/pages/Calendar";
+import Inbox from "@/components/pages/Inbox";
+import Rules from "@/components/pages/Rules";
 
 export const routes = {
   inbox: {
@@ -15,9 +17,17 @@ export const routes = {
   projects: {
     id: 'projects',
     label: 'Projects',
-    path: '/projects',
+path: '/projects',
     icon: 'FolderOpen',
     component: Projects
+  },
+  projectTimeline: {
+    id: 'projectTimeline',
+    label: 'Timeline',
+    path: '/projects/timeline/:projectId?',
+    icon: 'Timeline',
+    component: ProjectTimeline,
+    hidden: true
   },
   calendar: {
     id: 'calendar',

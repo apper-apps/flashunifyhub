@@ -1,17 +1,25 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import ProjectsList from '@/components/organisms/ProjectsList';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import ApperIcon from "@/components/ApperIcon";
+import ProjectsList from "@/components/organisms/ProjectsList";
+import Button from "@/components/atoms/Button";
 
 const Projects = () => {
+  const navigate = useNavigate();
   const handleCreateProject = () => {
     // This would open a modal to create a new project
     console.log('Create new project');
   };
 
-  const handleEditProject = (project) => {
+const handleEditProject = (project) => {
     // This would open a modal to edit the project
     console.log('Edit project:', project);
+  };
+
+  const handleViewTimeline = (project) => {
+    // Navigate to specific project timeline
+    navigate(`/projects/${project.id}/timeline`);
   };
 
   return (
@@ -31,15 +39,29 @@ const Projects = () => {
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
           </div>
-          <p className="text-gray-600">
+<p className="text-gray-600">
             Organize and link related items from different services into unified project workspaces.
           </p>
+          
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 mt-4">
+            <Button 
+              variant="primary" 
+              size="sm"
+              onClick={() => navigate('/projects/timeline')}
+              className="flex items-center gap-2"
+            >
+              <ApperIcon name="Timeline" size={16} />
+              View All Timelines
+            </Button>
+          </div>
         </div>
 
         {/* Main Content */}
         <ProjectsList 
           onCreateProject={handleCreateProject}
           onEditProject={handleEditProject}
+          onViewTimeline={handleViewTimeline}
         />
       </div>
     </motion.div>
