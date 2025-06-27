@@ -1,0 +1,80 @@
+[
+  {
+    "Id": 1,
+    "name": "High Priority Email to Task",
+    "conditions": [
+      {
+        "field": "type",
+        "operator": "equals",
+        "value": "email"
+      },
+      {
+        "field": "metadata.priority",
+        "operator": "equals",
+        "value": "high"
+      }
+    ],
+    "actions": [
+      {
+        "type": "create_task",
+        "data": {
+          "title": "Follow up on: {{title}}",
+          "priority": "high"
+        }
+      }
+    ],
+    "enabled": true
+  },
+  {
+    "Id": 2,
+    "name": "Meeting Reminder Block",
+    "conditions": [
+      {
+        "field": "type",
+        "operator": "equals",
+        "value": "calendar"
+      },
+      {
+        "field": "title",
+        "operator": "contains",
+        "value": "meeting"
+      }
+    ],
+    "actions": [
+      {
+        "type": "block_calendar",
+        "data": {
+          "duration": 30,
+          "before": true
+        }
+      }
+    ],
+    "enabled": true
+  },
+  {
+    "Id": 3,
+    "name": "Urgent Slack Notification",
+    "conditions": [
+      {
+        "field": "serviceId",
+        "operator": "equals",
+        "value": "3"
+      },
+      {
+        "field": "content",
+        "operator": "contains",
+        "value": "urgent"
+      }
+    ],
+    "actions": [
+      {
+        "type": "send_notification",
+        "data": {
+          "type": "desktop",
+          "message": "Urgent Slack message received"
+        }
+      }
+    ],
+    "enabled": false
+  }
+]

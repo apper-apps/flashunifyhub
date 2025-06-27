@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "name": "Gmail",
+    "type": "email",
+    "status": "connected",
+    "icon": "Mail",
+    "color": "#EA4335",
+    "lastSync": "2024-01-15T10:30:00Z"
+  },
+  {
+    "Id": 2,
+    "name": "Outlook",
+    "type": "email",
+    "status": "connected",
+    "icon": "Mail",
+    "color": "#0078D4",
+    "lastSync": "2024-01-15T10:25:00Z"
+  },
+  {
+    "Id": 3,
+    "name": "Slack",
+    "type": "messaging",
+    "status": "connected",
+    "icon": "MessageSquare",
+    "color": "#4A154B",
+    "lastSync": "2024-01-15T10:32:00Z"
+  },
+  {
+    "Id": 4,
+    "name": "Microsoft Teams",
+    "type": "messaging",
+    "status": "connected",
+    "icon": "Users",
+    "color": "#6264A7",
+    "lastSync": "2024-01-15T10:28:00Z"
+  },
+  {
+    "Id": 5,
+    "name": "Google Calendar",
+    "type": "calendar",
+    "status": "connected",
+    "icon": "Calendar",
+    "color": "#4285F4",
+    "lastSync": "2024-01-15T10:31:00Z"
+  }
+]

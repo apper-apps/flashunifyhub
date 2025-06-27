@@ -1,0 +1,67 @@
+[
+  {
+    "Id": 1,
+    "serviceId": "1",
+    "type": "email",
+    "title": "Q4 Marketing Campaign Review",
+    "content": "Please review the attached Q4 marketing materials and provide feedback by EOD Friday. The campaign focuses on our new product launch and targets enterprise customers.",
+    "timestamp": "2024-01-15T09:15:00Z",
+    "metadata": {
+      "sender": "sarah.johnson@company.com",
+      "priority": "high",
+      "hasAttachments": true
+    }
+  },
+  {
+    "Id": 2,
+    "serviceId": "3",
+    "type": "message",
+    "title": "Team standup in 5 minutes",
+    "content": "Don't forget about our daily standup in conference room B. We'll be discussing the sprint retrospective and planning for next week.",
+    "timestamp": "2024-01-15T09:25:00Z",
+    "metadata": {
+      "channel": "#development-team",
+      "sender": "mike.chen",
+      "mentions": ["@channel"]
+    }
+  },
+  {
+    "Id": 3,
+    "serviceId": "2",
+    "type": "email",
+    "title": "Client Meeting Rescheduled",
+    "content": "The client meeting scheduled for tomorrow has been moved to Thursday at 2 PM. Please update your calendars accordingly and prepare the presentation materials.",
+    "timestamp": "2024-01-15T08:45:00Z",
+    "metadata": {
+      "sender": "operations@company.com",
+      "priority": "normal",
+      "hasAttachments": false
+    }
+  },
+  {
+    "Id": 4,
+    "serviceId": "4",
+    "type": "message",
+    "title": "Budget approval needed",
+    "content": "The Q1 budget proposal is ready for review. Please check the shared document and approve by Wednesday so we can proceed with resource allocation.",
+    "timestamp": "2024-01-15T08:30:00Z",
+    "metadata": {
+      "sender": "finance-team",
+      "channel": "Project Alpha",
+      "hasDocument": true
+    }
+  },
+  {
+    "Id": 5,
+    "serviceId": "1",
+    "type": "email",
+    "title": "Security Update Required",
+    "content": "Please update your system passwords according to the new security policy. This is mandatory for all team members and must be completed by end of week.",
+    "timestamp": "2024-01-15T07:20:00Z",
+    "metadata": {
+      "sender": "security@company.com",
+      "priority": "urgent",
+      "hasAttachments": false
+    }
+  }
+]

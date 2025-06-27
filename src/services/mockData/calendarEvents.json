@@ -1,0 +1,34 @@
+[
+  {
+    "Id": 1,
+    "serviceId": "5",
+    "title": "Team Standup",
+    "start": "2024-01-15T14:00:00Z",
+    "end": "2024-01-15T14:30:00Z",
+    "attendees": ["mike.chen@company.com", "sarah.johnson@company.com"]
+  },
+  {
+    "Id": 2,
+    "serviceId": "5",
+    "title": "Client Presentation",
+    "start": "2024-01-16T16:00:00Z",
+    "end": "2024-01-16T17:00:00Z",
+    "attendees": ["client@external.com", "sales@company.com"]
+  },
+  {
+    "Id": 3,
+    "serviceId": "5",
+    "title": "Q1 Planning Meeting",
+    "start": "2024-01-17T13:00:00Z",
+    "end": "2024-01-17T15:00:00Z",
+    "attendees": ["leadership@company.com", "managers@company.com"]
+  },
+  {
+    "Id": 4,
+    "serviceId": "5",
+    "title": "Security Training",
+    "start": "2024-01-18T10:00:00Z",
+    "end": "2024-01-18T11:30:00Z",
+    "attendees": ["all-staff@company.com"]
+  }
+]
