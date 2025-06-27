@@ -1,15 +1,23 @@
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSelector } from 'react-redux';
 import ApperIcon from '@/components/ApperIcon';
 import { routeArray } from '@/config/routes';
-
+import { AuthContext } from './App';
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.user);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  const handleLogout = async () => {
+    if (confirm('Are you sure you want to log out?')) {
+      await logout();
+    }
+  };
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Mobile Header */}
@@ -64,12 +72,28 @@ const Layout = () => {
             ))}
           </nav>
 
-          {/* Service Status */}
+{/* User Info & Logout */}
           <div className="p-4 border-t border-gray-200">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-              All services connected
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                All services connected
+              </div>
             </div>
+            {user && (
+              <div className="space-y-2">
+                <div className="text-xs text-gray-600 truncate">
+                  {user.firstName} {user.lastName}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <ApperIcon name="LogOut" className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </aside>
 
