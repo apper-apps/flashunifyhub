@@ -6,7 +6,12 @@
     "status": "connected",
     "icon": "Mail",
     "color": "#EA4335",
-    "lastSync": "2024-01-15T10:30:00Z"
+    "lastSync": "2024-01-15T10:30:00Z",
+    "config": {
+      "syncFrequency": "15",
+      "includeAttachments": true,
+      "folderFilter": "INBOX"
+    }
   },
   {
     "Id": 2,
@@ -15,7 +20,12 @@
     "status": "connected",
     "icon": "Mail",
     "color": "#0078D4",
-    "lastSync": "2024-01-15T10:25:00Z"
+    "lastSync": "2024-01-15T10:25:00Z",
+    "config": {
+      "syncFrequency": "30",
+      "includeAttachments": false,
+      "folderFilter": "INBOX, Sent"
+    }
   },
   {
     "Id": 3,
@@ -24,7 +34,12 @@
     "status": "connected",
     "icon": "MessageSquare",
     "color": "#4A154B",
-    "lastSync": "2024-01-15T10:32:00Z"
+    "lastSync": "2024-01-15T10:32:00Z",
+    "config": {
+      "channelFilter": "#general, #team",
+      "includeDMs": true,
+      "keywords": "urgent, meeting"
+    }
   },
   {
     "Id": 4,
@@ -33,7 +48,12 @@
     "status": "connected",
     "icon": "Users",
     "color": "#6264A7",
-    "lastSync": "2024-01-15T10:28:00Z"
+    "lastSync": "2024-01-15T10:28:00Z",
+    "config": {
+      "channelFilter": "",
+      "includeDMs": true,
+      "keywords": ""
+    }
   },
   {
     "Id": 5,
@@ -42,6 +62,11 @@
     "status": "connected",
     "icon": "Calendar",
     "color": "#4285F4",
-    "lastSync": "2024-01-15T10:31:00Z"
+    "lastSync": "2024-01-15T10:31:00Z",
+    "config": {
+      "syncRange": "30",
+      "includeAllDay": true,
+      "calendarFilter": "Work, Personal"
+    }
   }
 ]

@@ -65,7 +65,26 @@ class ServiceService {
       lastSync: new Date().toISOString(),
       status: 'connected'
     });
-    return service;
+return service;
+  }
+
+  async updateConfig(id, config) {
+    await delay(300);
+    const service = await this.getById(id);
+    if (!service) {
+      throw new Error('Service not found');
+    }
+
+    const updatedService = await this.update(id, {
+      config: { ...service.config, ...config }
+    });
+    return updatedService;
+  }
+
+  async getConfig(id) {
+    await delay(200);
+    const service = await this.getById(id);
+    return service ? service.config || {} : null;
   }
 }
 

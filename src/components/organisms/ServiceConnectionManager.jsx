@@ -13,7 +13,8 @@ const ServiceConnectionManager = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [syncing, setSyncing] = useState({});
-
+  const [expandedServices, setExpandedServices] = useState({});
+  const [configuringServices, setConfiguringServices] = useState({});
   useEffect(() => {
     loadServices();
   }, []);
@@ -76,6 +77,28 @@ const ServiceConnectionManager = () => {
     } catch (err) {
       toast.error(`Failed to connect ${service.name}`);
     }
+};
+
+  const toggleServiceExpansion = (serviceId) => {
+    setExpandedServices(prev => ({
+      ...prev,
+      [serviceId]: !prev[serviceId]
+    }));
+  };
+
+  const handleConfigUpdate = async (serviceId, config) => {
+    setConfiguringServices(prev => ({ ...prev, [serviceId]: true }));
+    try {
+      const updatedService = await serviceService.updateConfig(serviceId, config);
+      setServices(prev => prev.map(s => 
+        s.Id === serviceId ? updatedService : s
+      ));
+      toast.success('Configuration updated successfully');
+    } catch (err) {
+      toast.error('Failed to update configuration');
+    } finally {
+      setConfiguringServices(prev => ({ ...prev, [serviceId]: false }));
+    }
   };
 
   const getStatusVariant = (status) => {
@@ -85,6 +108,138 @@ const ServiceConnectionManager = () => {
       case 'syncing': return 'warning';
       default: return 'default';
     }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'connected': return 'CheckCircle2';
+      case 'disconnected': return 'XCircle';
+      case 'syncing': return 'Clock';
+      default: return 'HelpCircle';
+    }
+  };
+
+  const renderServiceConfiguration = (service) => {
+    const config = service.config || {};
+    
+    if (service.type === 'email') {
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Sync Frequency</label>
+            <select 
+              value={config.syncFrequency || '15'} 
+              onChange={(e) => handleConfigUpdate(service.Id, { syncFrequency: e.target.value })}
+              className="px-3 py-1 border border-gray-300 rounded text-sm"
+            >
+              <option value="5">Every 5 minutes</option>
+              <option value="15">Every 15 minutes</option>
+              <option value="30">Every 30 minutes</option>
+              <option value="60">Every hour</option>
+            </select>
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Include Attachments</label>
+            <input 
+              type="checkbox" 
+              checked={config.includeAttachments || false}
+              onChange={(e) => handleConfigUpdate(service.Id, { includeAttachments: e.target.checked })}
+              className="rounded border-gray-300"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Folder Filter</label>
+            <input 
+              type="text" 
+              value={config.folderFilter || ''} 
+              onChange={(e) => handleConfigUpdate(service.Id, { folderFilter: e.target.value })}
+              placeholder="e.g., INBOX, Sent"
+              className="px-3 py-1 border border-gray-300 rounded text-sm w-32"
+            />
+          </div>
+        </div>
+      );
+    }
+    
+    if (service.type === 'messaging') {
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Channel Filter</label>
+            <input 
+              type="text" 
+              value={config.channelFilter || ''} 
+              onChange={(e) => handleConfigUpdate(service.Id, { channelFilter: e.target.value })}
+              placeholder="e.g., #general, #team"
+              className="px-3 py-1 border border-gray-300 rounded text-sm w-32"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Direct Messages</label>
+            <input 
+              type="checkbox" 
+              checked={config.includeDMs || true}
+              onChange={(e) => handleConfigUpdate(service.Id, { includeDMs: e.target.checked })}
+              className="rounded border-gray-300"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Notification Keywords</label>
+            <input 
+              type="text" 
+              value={config.keywords || ''} 
+              onChange={(e) => handleConfigUpdate(service.Id, { keywords: e.target.value })}
+              placeholder="urgent, meeting"
+              className="px-3 py-1 border border-gray-300 rounded text-sm w-32"
+            />
+          </div>
+        </div>
+      );
+    }
+    
+    if (service.type === 'calendar') {
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Sync Range</label>
+            <select 
+              value={config.syncRange || '30'} 
+              onChange={(e) => handleConfigUpdate(service.Id, { syncRange: e.target.value })}
+              className="px-3 py-1 border border-gray-300 rounded text-sm"
+            >
+              <option value="7">Next 7 days</option>
+              <option value="30">Next 30 days</option>
+              <option value="90">Next 90 days</option>
+            </select>
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Include All Day Events</label>
+            <input 
+              type="checkbox" 
+              checked={config.includeAllDay || true}
+              onChange={(e) => handleConfigUpdate(service.Id, { includeAllDay: e.target.checked })}
+              className="rounded border-gray-300"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Calendar Filter</label>
+            <input 
+              type="text" 
+              value={config.calendarFilter || ''} 
+              onChange={(e) => handleConfigUpdate(service.Id, { calendarFilter: e.target.value })}
+              placeholder="Work, Personal"
+              className="px-3 py-1 border border-gray-300 rounded text-sm w-32"
+            />
+          </div>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="text-sm text-gray-500">
+        No specific configuration options available for this service type.
+      </div>
+    );
   };
 
   const groupedServices = services.reduce((acc, service) => {
@@ -145,61 +300,112 @@ const ServiceConnectionManager = () => {
           <h3 className="text-lg font-semibold text-gray-900 mb-4 capitalize">
             {type} Services
           </h3>
-          
-          <div className="space-y-4">
+<div className="space-y-4">
             {typeServices.map((service) => (
               <div
                 key={service.Id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                className="bg-white rounded-lg border border-gray-200 overflow-hidden"
               >
-                <div className="flex items-center gap-4">
-                  <ServiceBadge service={service} size="md" />
-                  
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge variant={getStatusVariant(service.status)}>
-                        {service.status}
-                      </Badge>
-                      {service.status === 'connected' && service.lastSync && (
-                        <span className="text-xs text-gray-500">
-                          Last sync {formatDistanceToNow(new Date(service.lastSync), { addSuffix: true })}
-                        </span>
-                      )}
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-4">
+                    <ServiceBadge service={service} size="md" />
+                    
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-1">
+                          <ApperIcon 
+                            name={getStatusIcon(service.status)} 
+                            className={`w-4 h-4 ${
+                              service.status === 'connected' ? 'text-success' :
+                              service.status === 'disconnected' ? 'text-error' :
+                              service.status === 'syncing' ? 'text-warning' :
+                              'text-gray-400'
+                            }`}
+                          />
+                          <Badge variant={getStatusVariant(service.status)}>
+                            {service.status}
+                          </Badge>
+                        </div>
+                        {service.status === 'connected' && service.lastSync && (
+                          <span className="text-xs text-gray-500">
+                            Last sync {formatDistanceToNow(new Date(service.lastSync), { addSuffix: true })}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {service.status === 'connected' ? 'Service is running normally' :
+                         service.status === 'syncing' ? 'Synchronizing data...' :
+                         'Service disconnected'}
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  {service.status === 'connected' && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleSync(service)}
-                      disabled={syncing[service.Id]}
-                      loading={syncing[service.Id]}
-                    >
-                      <ApperIcon name="RefreshCw" className="w-4 h-4 mr-2" />
-                      Sync
-                    </Button>
-                  )}
                   
-                  {service.status === 'connected' ? (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDisconnect(service)}
-                    >
-                      Disconnect
-                    </Button>
-                  ) : (
-                    <Button
-                      size="sm"
-                      onClick={() => handleConnect(service)}
-                    >
-                      Connect
-                    </Button>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {service.status === 'connected' && (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => toggleServiceExpansion(service.Id)}
+                        >
+                          <ApperIcon 
+                            name={expandedServices[service.Id] ? "ChevronUp" : "Settings"} 
+                            className="w-4 h-4 mr-2" 
+                          />
+                          {expandedServices[service.Id] ? 'Hide' : 'Configure'}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleSync(service)}
+                          disabled={syncing[service.Id]}
+                          loading={syncing[service.Id]}
+                        >
+                          <ApperIcon name="RefreshCw" className="w-4 h-4 mr-2" />
+                          Sync
+                        </Button>
+                      </>
+                    )}
+                    
+                    {service.status === 'connected' ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDisconnect(service)}
+                      >
+                        Disconnect
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => handleConnect(service)}
+                      >
+                        Connect
+                      </Button>
+                    )}
+                  </div>
                 </div>
+
+                {/* Configuration Panel */}
+                {expandedServices[service.Id] && service.status === 'connected' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="border-t border-gray-200 bg-gray-50"
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <ApperIcon name="Settings" className="w-4 h-4 text-gray-600" />
+                        <h4 className="font-medium text-gray-900">Service Configuration</h4>
+                        {configuringServices[service.Id] && (
+                          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        )}
+                      </div>
+                      {renderServiceConfiguration(service)}
+                    </div>
+                  </motion.div>
+                )}
               </div>
             ))}
           </div>
